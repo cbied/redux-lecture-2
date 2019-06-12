@@ -1,6 +1,15 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+import { getStarWarsCharacters } from '../redux/reducers/starWarsReducer'
 
 class CharacterList extends Component {
+constructor(props) {
+  super(props)
+}
+
+  componentDidMount() {
+    this.props.getStarWarsCharacters();
+  }
 
   render() {
     return (
@@ -20,10 +29,23 @@ class CharacterList extends Component {
           <h1>Star Wars Characters</h1>
           <div>
             {/* Star Wars Characters Here */}
+            {this.props.loading ? '...Loading' 
+            : this.props.characters.map(char => {
+              return(
+                <p>{char.name}</p>
+              )
+            })}
           </div>
         </aside>
       </div>
     );
   }
 }
-export default CharacterList;
+
+const mapStateToProps = reduxState => {
+  return reduxState
+}
+
+export default connect(mapStateToProps, {
+  getStarWarsCharacters
+})(CharacterList);
